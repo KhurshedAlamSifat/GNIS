@@ -1,0 +1,359 @@
+﻿@model GNIS_MUL_Form.ViewModels.MeetingMinutesViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<br />
+<form asp-action="SaveMeetingMinutes" method="post">
+    <div class="container-fluid bg-light">
+        <div class="header-container border">
+            <div class="header-title">
+                <h6>Meeting Minutes</h6>
+            </div>
+            <div class="header-edit-icon">
+                <i class="fas fa-edit"></i>
+            </div>
+        </div>
+        <main role="main" class="pb-3">
+            <div class="row">
+                <div class="col-12">
+                    <div class="div1 p-3 mb-3 bg-white shadow-sm rounded">
+                        <div class="radio-group">
+                            <div>
+                                <input type="radio" id="corporate" name="SelectedCustomerType" value="corporate" checked />
+                                <label for="corporate">Corporate</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="individual" name="SelectedCustomerType" value="individual" />
+                                <label for="individual">Individual</label>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="customerName" class="col-sm-4 col-form-label">Customer Name<span style="color: red">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select id="customerName" name="SelectedCustomerId" class="form-control form-control-select">
+                                            <!-- Options will be dynamically loaded -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <div class="form-row">
+                                            <label for="date" class="col-sm-5 col-form-label">Date</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" id="date" name="MeetingDate" class="form-control" placeholder="Select date" />
+                                            </div>
+
+                                            <label for="time" class="col-sm-1 col-form-label">Time</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" id="time" name="MeetingTime" class="form-control" placeholder="Enter time" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="meetingPlace" class="col-sm-4 col-form-label">Meeting Place<span style="color: red">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="meetingPlace" name="MeetingPlace" class="form-control" placeholder="meeting place" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="attendsClient" class="col-sm-4 col-form-label">Attends From Client Side<span style="color: red">*</span></label>
+                                    <div class="col-sm-8">
+                                        <textarea id="attendsClient" name="AttendsClient" class="form-control" rows="4" placeholder="Present client side"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="attendsHost" class="col-sm-4 col-form-label">Attends From Host Side<span style="color: red">*</span></label>
+                                    <div class="col-sm-8">
+                                        <textarea id="attendsHost" name="AttendsHost" class="form-control" rows="4" placeholder="Present self side"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="meetingAgenda" class="col-sm-4 col-form-label">Meeting Agenda<span style="color: red">*</span></label>
+                                    <div class="col-sm-8">
+                                        <textarea id="meetingAgenda" name="MeetingAgenda" class="form-control" rows="4" placeholder="Meeting agenda"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="meetingDiscussion" class="col-sm-4 col-form-label">Meeting Discussion<span style="color: red">*</span></label>
+                                    <div class="col-sm-8">
+                                        <textarea id="meetingDiscussion" name="MeetingDiscussion" class="form-control" rows="4" placeholder="Meeting discussion"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="meetingDecision" class="col-sm-4 col-form-label">Meeting Decision<span style="color: red">*</span></label>
+                                    <div class="col-sm-8">
+                                        <textarea id="meetingDecision" name="MeetingDecision" class="form-control" rows="4" placeholder="Meeting decision"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="div2 p-3 mb-3 bg-white shadow-sm rounded">
+                        <div class="form-group row">
+                            <label for="productService" class="col-sm-2 col-form-label">Interested Product/Service</label>
+                            <div class="col-sm-6">
+                                <select id="productService" name="ProductServiceId" class="form-control form-control-select">
+                                    <!-- Product/Service options will be dynamically loaded -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
+                            <div class="col-sm-3">
+                                <input type="number" id="quantity" name="Quantity" class="form-control" placeholder="Enter quantity" />
+                            </div>
+
+                            <label for="unit" class="col-sm-1 col-form-label">Unit</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="unit" name="Unit" class="form-control" placeholder="Unit" readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-primary" id="addButton">
+                                    + Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="div3 p-3 mb-3 bg-white shadow-sm rounded">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>SL#</th>
+                                    <th>Interested Product/Service Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr id="noRecordRow">
+                                    <td colspan="6" class="text-center">
+                                        No matching record found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div>
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Save
+            </button>
+            <button type="button" class="btn btn-secondary">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+        <br />
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            loadCustomers('corporate');
+
+            $('input[name="SelectedCustomerType"]').change(function () {
+                const type = $(this).val();
+                loadCustomers(type);
+            });
+
+            function loadCustomers(type) {
+                $.ajax({
+                    url: '@Url.Action("GetCustomers", "Home")',
+                    type: 'GET',
+                    data: { type },
+                    success: function (data) {
+                        const $customerName = $('#customerName');
+                        $customerName.empty().append($('<option>').text('Select a customer'));
+                        $.each(data, function (index, customer) {
+                            $customerName.append($('<option>').val(customer.value).text(customer.text));
+                        });
+                    },
+                    error: function (error) {
+                        console.error('Error loading customers:', error);
+                    }
+                });
+            }
+
+            loadProducts();
+
+            function loadProducts() {
+                $.ajax({
+                    url: '@Url.Action("GetProducts", "Home")',
+                    type: 'GET',
+                    success: function (data) {
+                        const $productService = $('#productService');
+                        $productService.empty().append($('<option>').text('Select a product/service'));
+                        $.each(data, function (index, product) {
+                            $productService.append($('<option>').val(product.id).text(product.name));
+                        });
+
+                        $productService.change(function () {
+                            const selectedProductId = $(this).val();
+                            const selectedProduct = data.find(p => p.id == selectedProductId);
+                            $('#unit').val(selectedProduct ? selectedProduct.unit : '');
+                        });
+                    },
+                    error: function (error) {
+                        console.error('Error loading products:', error);
+                    }
+                });
+            }
+
+
+            $('#date').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $('#time').timepicker({
+                timeFormat: 'h:mm p',
+                interval: 10,
+                minTime: '0',
+                maxTime: '11:59pm',
+                startTime: '00:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true
+            });
+
+            $('#addButton').click(function () {
+                const productName = $('#productService option:selected').text();
+                const quantity = $('#quantity').val();
+                const unit = $('#unit').val();
+                const productServiceId = $('#productService').val();
+
+                console.log('Selected Product ID:', productServiceId); 
+
+                if (productName && quantity && unit) {
+                    const rowCount = $('#tableBody tr').length;
+                    const rowHtml = `
+                            <tr>
+                                <td>${rowCount + 1}</td>
+                                <td data-productServiceId="${productServiceId}">${productName}</td>
+                                <td>${quantity}</td>
+                                <td>${unit}</td>
+                                <td><button type="button" class="btn btn-sm btn-warning editRow">Edit</button></td>
+                                <td><button type="button" class="btn btn-sm btn-danger deleteRow">Delete</button></td>
+                            </tr>
+                        `;
+                    $('#tableBody').append(rowHtml);
+
+                    $('#productService').val('');
+                    $('#quantity').val('');
+                    $('#unit').val('');
+                }
+            });
+
+
+           
+            $("form").submit(function (e) {
+                e.preventDefault(); 
+
+                const meetingMinutesDetails = [];
+                $("#tableBody tr").each(function () {
+                    const row = $(this);
+                    const productServiceId = row.find("td:eq(1)").data("productServiceId");
+                    const quantity = row.find("td:eq(2)").text();
+                    const unit = row.find("td:eq(3)").text();
+
+                    if (productServiceId) {
+                        meetingMinutesDetails.push({
+                            ProductServiceId: productServiceId,
+                            Quantity: quantity,
+                            Unit: unit,
+                        });
+                    }
+                });
+
+                console.log("Meeting Minutes Details:", meetingMinutesDetails); 
+
+                
+                $('input[name="MeetingMinutesDetails"]').remove();
+
+                $("<input>")
+                    .attr({
+                        type: "hidden",
+                        name: "MeetingMinutesDetails",
+                        value: JSON.stringify(meetingMinutesDetails),
+                    })
+                    .appendTo("form");
+
+                const productsServicesData = $("#productService option")
+                    .map(function () {
+                        return {
+                            Id: $(this).val(),
+                            Name: $(this).text(),
+                            Unit: $(this).data("unit") || '', 
+                        };
+                    })
+                    .get();
+
+                console.log("Products Services Data:", productsServicesData); 
+
+                $('input[name="ProductsServices"]').remove();
+
+                $("<input>")
+                    .attr({
+                        type: "hidden",
+                        name: "ProductsServices",
+                        value: JSON.stringify(productsServicesData),
+                    })
+                    .appendTo("form");
+
+                this.submit();
+            });
+
+            $('#tableBody').on('click', '.editRow', function () {
+                const $row = $(this).closest('tr');
+                const productName = $row.find('td:eq(1)').text();
+                const quantity = $row.find('td:eq(2)').text();
+                const unit = $row.find('td:eq(3)').text();
+
+                $('#productService').val($('#productService option').filter(function () {
+                    return $(this).text() === productName;
+                }).val());
+
+                $('#quantity').val(quantity);
+                $('#unit').val(unit);
+
+                $row.remove();
+            });
+
+            $('#tableBody').on('click', '.deleteRow', function () {
+                $(this).closest('tr').remove();
+            });
+        });
+
+
+    </script>
+}
