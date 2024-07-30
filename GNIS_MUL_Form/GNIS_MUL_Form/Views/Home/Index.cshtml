@@ -150,8 +150,8 @@
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                <tr id="noRecordRow">
-                                    <td colspan="6" class="text-center">
+                                <tr id="noRecordRow" class="text-center">
+                                    <td colspan="6">
                                         No matching record found
                                     </td>
                                 </tr>
@@ -192,7 +192,7 @@
                     data: { type },
                     success: function (data) {
                         const $customerName = $('#customerName');
-                        $customerName.empty().append($('<option>').text('Select a customer'));
+                        $customerName.empty().append($('<option>').text('Select customer name'));
                         $.each(data, function (index, customer) {
                             $customerName.append($('<option>').val(customer.value).text(customer.text));
                         });
@@ -211,7 +211,7 @@
                     type: 'GET',
                     success: function (data) {
                         const $productService = $('#productService');
-                        $productService.empty().append($('<option>').text('Select a product/service'));
+                        $productService.empty().append($('<option>').text('Select product/service interested'));
                         $.each(data, function (index, product) {
                             $productService.append($('<option>').val(product.id).text(product.name));
                         });
@@ -246,6 +246,17 @@
                 scrollbar: true
             });
 
+            function updateTableVisibility() {
+                const $tableBody = $('#tableBody');
+                const $noRecordRow = $('#noRecordRow');
+
+                if ($tableBody.find('tr').length > 1) {
+                    $noRecordRow.hide(); 
+                } else {
+                    $noRecordRow.show(); 
+                }
+            }
+
             $('#addButton').click(function () {
                 const productName = $('#productService option:selected').text();
                 const quantity = $('#quantity').val();
@@ -258,7 +269,7 @@
                     const rowCount = $('#tableBody tr').length;
                     const rowHtml = `
                             <tr>
-                                <td>${rowCount + 1}</td>
+                                <td>${rowCount}</td>
                                 <td data-productServiceId="${productServiceId}">${productName}</td>
                                 <td>${quantity}</td>
                                 <td>${unit}</td>
@@ -271,6 +282,7 @@
                     $('#productService').val('');
                     $('#quantity').val('');
                     $('#unit').val('');
+                    updateTableVisibility();
                 }
             });
 
@@ -347,11 +359,14 @@
                 $('#unit').val(unit);
 
                 $row.remove();
+                updateTableVisibility();
             });
 
             $('#tableBody').on('click', '.deleteRow', function () {
                 $(this).closest('tr').remove();
+                updateTableVisibility();
             });
+            updateTableVisibility();
         });
 
 
